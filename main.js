@@ -1,8 +1,23 @@
 const cors = require("cors");
 const express = require("express");
+require("dotenv").config();
 const app = express();
+const mongoose = require("mongoose");
+const Contact = require("./models/contact");
 
-app.use(cors()); // allows all domains
+const dbURI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWROD}@tayo.psao2tn.mongodb.net/tayo?retryWrites=true&w=majority`;
+mongoose
+  .connect(dbURI)
+  .then((res) => {
+    app.listen(process.env.PORT || 9000);
+    console.log("lyckades anslutna till DB");
+  })
+  .catch((err) => console.log("misslyckades ansluta till DB"));
+var corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions)); // allows all domains
 app.use(express.json()); // allows req.body on json
 
 app.get("/api/animal/:name", (req, res) => {
@@ -39,7 +54,10 @@ app.get("/fake-search", (req, res) => {
 });
 
 app.post("/api/contact", (req, res) => {
+  const contact = new Contact({ name: "test", email: "test", message: "test" });
+  contact
+    .save()
+    .then((result) => res.json(result))
+    .catch((err) => console.log("misslyckades"));
   console.log("req", req.body);
 });
-
-app.listen(process.env.PORT || 9000);
