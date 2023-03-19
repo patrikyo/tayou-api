@@ -14,7 +14,7 @@ mongoose
   })
   .catch((err) => console.log(err, "misslyckades ansluta till DB"));
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://tayo.onrender.com"],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 app.use(cors(corsOptions)); // allows all domains
