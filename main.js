@@ -21,3 +21,6 @@ app.use(cors(corsOptions)); // allows localhost and tayo domain
 app.use(express.json()); // allows req.body on json
 
 app.use("/api", contacRoute);
+app.get("/ping", () => {
+  console.log("ping");
+});
